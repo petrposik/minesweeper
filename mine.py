@@ -1,7 +1,4 @@
-import numbers
 import random
-from enum import Enum
-from ssl import OPENSSL_VERSION
 from getch import get_command
 import ansi
 
@@ -166,33 +163,37 @@ class MineField:
 
     def process(self, command):
         r, c = self.focus
-        match command:
-            case "up":
-                if r - 1 >= 0:
-                    self.focus = (r - 1, c)
-            case "down":
-                if r + 1 < self.n_rows:
-                    self.focus = (r + 1, c)
-            case "left":
-                if c - 1 >= 0:
-                    self.focus = (r, c - 1)
-            case "right":
-                if c + 1 < self.n_cols:
-                    self.focus = (r, c + 1)
-            case "flag":
-                self.flags[r][c] = 0 if self.flags[r][c] else 1
-            case "space":
-                if self.open[r][c] and self.numbers[r][c] > 0:
-                    if self.numbers[r][c] == self.count_flags_around(r, c):
-                        self.open_all_neighbors(r, c)
-                else:
-                    self.open_cell(r, c)
+        if command == "up":
+            if r - 1 >= 0:
+                self.focus = (r - 1, c)
+        elif command == "down":
+            if r + 1 < self.n_rows:
+                self.focus = (r + 1, c)
+        elif command == "left":
+            if c - 1 >= 0:
+                self.focus = (r, c - 1)
+        elif command == "right":
+            if c + 1 < self.n_cols:
+                self.focus = (r, c + 1)
+        elif command == "flag":
+            self.flags[r][c] = 0 if self.flags[r][c] else 1
+        elif command == "space":
+            if self.open[r][c] and self.numbers[r][c] > 0:
+                if self.numbers[r][c] == self.count_flags_around(r, c):
+                    self.open_all_neighbors(r, c)
+            else:
+                self.open_cell(r, c)
         if not self.finished and self.cells_to_open == 0:
             self.finished = True
             self.result = "YUPEEE!!! You won!"
 
 
 def main():
+    print("MINESWEEPER!")
+    print(
+        "Controls: Q - quit, WASD or cursor keys - move focus, F - toggle flag, SPACE - open cell"
+    )
+
     field = MineField(15, 20, 0.2)
     field.open_empty_cell()
     print(field, end="")
