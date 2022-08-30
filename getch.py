@@ -46,6 +46,15 @@ ch2dir = {
     b"q": "quit",
     b"\xe0": {b"K": "left", b"M": "right", b"H": "up", b"P": "down"},
     b"\x00": {b"K": "left", b"M": "right", b"H": "up", b"P": "down"},
+    "\r": "return",
+    " ": "space",
+    "a": "left",
+    "d": "right",
+    "w": "up",
+    "s": "down",
+    "f": "flag",
+    "q": "quit",
+    "\x1b": {"[": {"A": "up", "B": "down", "C": "right", "D": "left"}},
 }
 
 
@@ -68,4 +77,12 @@ def get_command(char2dir=ch2dir):
 
 
 if __name__ == "__main__":
-    print(getch())
+    while True:
+        ch = getch()
+        print(type(ch))
+        if ch.isprintable():
+            print(ch, ":", ord(ch))
+        else:
+            print(" ", ":", ord(ch))
+        if ch == "q":
+            break
